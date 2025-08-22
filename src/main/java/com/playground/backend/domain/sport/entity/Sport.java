@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 스포츠 타입 엔티티
+ * 스포츠 엔티티
  */
 @Entity
 @Table(name = "sport")
