@@ -29,7 +29,7 @@ public class Team extends BaseEntity {
     @Column(name = "logo_image")
     private String logoImage;
 
-    @ManyToOne(fetch = FetchType.LAZY) // 한 팀은 하나의 스포츠만 가짐.
+    @ManyToOne(fetch = FetchType.LAZY) // 한 팀은 하나의 스포츠만 가짐
     @JoinColumn(name = "sport_type", nullable = false)
     private Sport sport;
 }

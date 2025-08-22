@@ -23,4 +23,7 @@ public class Sport {
 
     @Column(length = 100, unique = true, nullable = false)
     private String name;
+
+    @Column(name = "min_team_member", nullable = false)
+    private Integer minTeamMember;
 }
