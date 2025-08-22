@@ -1,6 +1,6 @@
 package com.playground.backend.domain.team.entity;
 
-import com.playground.backend.domain.sporttype.entity.SportType;
+import com.playground.backend.domain.sport.entity.Sport;
 import com.playground.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,5 +31,5 @@ public class Team extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY) // 한 팀은 하나의 스포츠만 가짐.
     @JoinColumn(name = "sport_type", nullable = false)
-    private SportType sportType;
+    private Sport sport;
 }

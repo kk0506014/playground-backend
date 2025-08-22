@@ -1,4 +1,4 @@
-package com.playground.backend.domain.sporttype.entity;
+package com.playground.backend.domain.sport.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
  * 스포츠 타입 엔티티
  */
 @Entity
-@Table(name = "sport_type")
+@Table(name = "sport")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SportType {
+public class Sport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
