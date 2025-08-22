@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
  * 스포츠 타입 엔티티
  */
 @Entity
+@Table(name = "sport_type")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
