@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * 경기 엔티티
  */
 @Entity
-@Table(name = "match")
+@Table(name = "`match`")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
