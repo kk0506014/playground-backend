@@ -3,3 +3,6 @@ spring:
     name: backend
   profiles:
     include: secret
+  jpa:
+    hibernate:
+      ddl-auto: update
