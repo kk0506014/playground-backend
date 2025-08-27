@@ -2,6 +2,8 @@ package com.playground.backend.domain.user.service;
 
 import com.playground.backend.domain.user.dto.request.SignupRequest;
 import com.playground.backend.domain.user.entity.User;
+import com.playground.backend.domain.user.exception.UserErrorCode;
+import com.playground.backend.domain.user.exception.UserException;
 import com.playground.backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,17 @@ public class UserService {
      */
     @Transactional
     public User registerUser(SignupRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserException(UserErrorCode.EMAIL_EXISTS);
+        }
+
+        if (userRepository.existsByUserName(request.getUserName())) {
+            throw new UserException(UserErrorCode.USERNAME_EXISTS);
+        }
+
+        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new UserException(UserErrorCode.PHONE_EXISTS);
+        }
 
         User user = User.builder()
                 .email(request.getEmail())
