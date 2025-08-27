@@ -1,5 +1,6 @@
 package com.playground.backend.domain.user.service;
 
+import com.playground.backend.domain.user.dto.request.SignupRequest;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,24 +21,20 @@ public class UserService {
     /**
      * 회원가입 메서드
      *
-     * @param email        이메일
-     * @param rawPassword  평문 비밀번호
-     * @param name         이름
-     * @param profileImage 프로필 이미지
+     * @param request 회원가입 요청 DTO
      * @return 회원가입이 완료된 User 엔티티
      * @throws IllegalArgumentException 이메일이 이미 존재할 경우
      */
     @Transactional
-    public User registerUser(String email, String rawPassword, String name, String profileImage) {
-        if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException();
-        }
+    public User registerUser(SignupRequest request) {
 
         User user = User.builder()
-                .email(email)
-                .password(passwordEncoder.encode(rawPassword))
-                .name(name)
-                .profileImage(profileImage)
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .userName(request.getUserName())
+                .fullName(request.getFullName())
+                .phoneNumber(request.getPhoneNumber())
+                .profileImage(request.getProfileImage())
                 .build();
 
         return userRepository.save(user);
