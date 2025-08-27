@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * API 응답 DTO
+ * 유저 API 응답 DTO
  */
 @Getter
 @NoArgsConstructor
@@ -17,7 +17,11 @@ public class UserResponse {
 
     private String email;
 
-    private String name;
+    private String userName;
+
+    private String fullName;
+
+    private String phoneNumber;
 
     private String profileImage;
 
@@ -31,7 +35,9 @@ public class UserResponse {
         return new UserResponse(
                 user.getId(),
                 user.getEmail(),
-                user.getName(),
+                user.getUserName(),
+                user.getFullName(),
+                user.getPhoneNumber(),
                 user.getProfileImage()
         );
     }
