@@ -1,6 +1,6 @@
 package com.playground.backend.domain.user.service;
 
-import com.playground.backend.domain.user.dto.request.SignupRequest;
+import com.playground.backend.domain.user.dto.request.SignUpRequest;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.exception.UserErrorCode;
 import com.playground.backend.domain.user.exception.UserException;
@@ -24,11 +24,12 @@ public class UserService {
      * 회원가입 메서드
      *
      * @param request 회원가입 요청 DTO
-     * @return 회원가입이 완료된 User 엔티티
-     * @throws IllegalArgumentException 이메일이 이미 존재할 경우
+     * @throws UserException EMAIL_EXISTS
+     * @throws UserException USERNAME_EXISTS
+     * @throws UserException PHONE_EXISTS
      */
     @Transactional
-    public User registerUser(SignupRequest request) {
+    public void signUp(SignUpRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserException(UserErrorCode.EMAIL_EXISTS);
         }
@@ -50,6 +51,6 @@ public class UserService {
                 .profileImage(request.getProfileImage())
                 .build();
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 }
