@@ -23,32 +23,32 @@ public class UserService {
     /**
      * 회원가입 메서드
      *
-     * @param request 회원가입 요청 DTO
+     * @param signUpRequest 회원가입 요청 DTO
      * @throws UserException EMAIL_EXISTS
      * @throws UserException USERNAME_EXISTS
      * @throws UserException PHONE_EXISTS
      */
     @Transactional
-    public void signUp(SignUpRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+    public void signUp(SignUpRequest signUpRequest) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new UserException(UserErrorCode.EMAIL_EXISTS);
         }
 
-        if (userRepository.existsByUserName(request.getUserName())) {
+        if (userRepository.existsByUserName(signUpRequest.getUserName())) {
             throw new UserException(UserErrorCode.USERNAME_EXISTS);
         }
 
-        if (userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+        if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
             throw new UserException(UserErrorCode.PHONE_EXISTS);
         }
 
         User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .userName(request.getUserName())
-                .fullName(request.getFullName())
-                .phoneNumber(request.getPhoneNumber())
-                .profileImage(request.getProfileImage())
+                .email(signUpRequest.getEmail())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .userName(signUpRequest.getUserName())
+                .fullName(signUpRequest.getFullName())
+                .phoneNumber(signUpRequest.getPhoneNumber())
+                .profileImage(signUpRequest.getProfileImage())
                 .build();
 
         userRepository.save(user);
