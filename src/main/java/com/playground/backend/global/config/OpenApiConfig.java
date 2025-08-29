@@ -7,7 +7,6 @@ import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
 /**
  * Swagger 설정
  */
@@ -27,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
  * Controller 하위 path 포함
  */
 public class OpenApiConfig {
+
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
