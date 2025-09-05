@@ -45,12 +45,12 @@ public class UserController {
      * 로그인 엔드포인트
      *
      * @param request 로그인 요청 DTO
+     * @param response HTTP 응답 객체
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PostMapping("/log-in")
     @Operation(summary = "로그인")
-    public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request, HttpServletResponse response) {
         String accessToken = userService.logIn(request);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
@@ -64,5 +64,28 @@ public class UserController {
         response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(ApiResponse.success("로그인 성공"));
+    }
+
+
+    /**
+     * 로그아웃 엔드포인트
+     *
+     * @param response HTTP 응답 객체
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @PostMapping("/log-out")
+    @Operation(summary = "로그아웃")
+    public ResponseEntity<ApiResponse<String>> logOut(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .httpOnly(true)
+//                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"));
     }
 }
