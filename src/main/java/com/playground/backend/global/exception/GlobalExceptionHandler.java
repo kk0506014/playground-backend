@@ -1,5 +1,6 @@
 package com.playground.backend.global.exception;
 
+import com.playground.backend.domain.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * 처리되지 않은 일반 예외를 잡아, 코드와 메시지를 클라이언트에 반환
+     * 처리되지 않은 일반 예외 처리 메서드
      *
-     * @param ex 발생한 예외
+     * @param ex 발생한 일반 예외
      * @return ResponseEntity<ErrorResponse> 표준화된 에러 응답
      */
     @ExceptionHandler(Exception.class)
@@ -25,6 +26,22 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(
                         "INTERNAL_SERVER_ERROR",
                         "서버 내부 오류가 발생했습니다."
+                ));
+    }
+
+    /**
+     * UserException 처리 메서드
+     *
+     * @param ex 발생한 UserException
+     * @return ResponseEntity<ErrorResponse> 사용자 정의 에러 응답
+     */
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ErrorResponse> handleUserException(UserException ex) {
+        log.warn("UserException: {}", ex.getMessage());
+        return ResponseEntity.status(ex.getStatus())
+                .body(ErrorResponse.of(
+                        ex.getCode(),
+                        ex.getMessage()
                 ));
     }
 }
