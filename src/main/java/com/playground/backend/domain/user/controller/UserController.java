@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     public ResponseEntity<ApiResponse<String>> signUp(@Valid @RequestBody SignUpRequest request) {
         userService.signUp(request);
+
         return ResponseEntity.ok(ApiResponse.success("회원가입 성공"));
     }
 
@@ -43,15 +45,47 @@ public class UserController {
      * 로그인 엔드포인트
      *
      * @param request 로그인 요청 DTO
+     * @param response HTTP 응답 객체
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PostMapping("/log-in")
     @Operation(summary = "로그인")
-    public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request,
-            HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request, HttpServletResponse response) {
         String accessToken = userService.logIn(request);
-        response.addHeader("Set-Cookie",
-                "accessToken=" + accessToken);
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                .httpOnly(true)
+//                .secure(true)
+                .path("/")
+                .maxAge(60 * 60)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
         return ResponseEntity.ok(ApiResponse.success("로그인 성공"));
+    }
+
+
+    /**
+     * 로그아웃 엔드포인트
+     *
+     * @param response HTTP 응답 객체
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @PostMapping("/log-out")
+    @Operation(summary = "로그아웃")
+    public ResponseEntity<ApiResponse<String>> logOut(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .httpOnly(true)
+//                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"));
     }
 }
