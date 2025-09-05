@@ -1,6 +1,9 @@
 package com.playground.backend.global.auth;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -40,7 +42,7 @@ public class JwtProvider {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-    
+
     /**
      * JWT 토큰 생성 메서드
      *
@@ -112,7 +114,10 @@ public class JwtProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = parseToken(token);
         String email = claims.getSubject();
-        String role = (String) claims.get("roles");
+
+        @SuppressWarnings("unchecked")
+        List<String> roles = (List<String>) claims.get("roles");
+        String role = roles.get(0);
 
         return new UsernamePasswordAuthenticationToken(
                 email, "", List.of(new SimpleGrantedAuthority(role)));
