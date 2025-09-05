@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     public ResponseEntity<ApiResponse<String>> signUp(@Valid @RequestBody SignUpRequest request) {
         userService.signUp(request);
+
         return ResponseEntity.ok(ApiResponse.success("회원가입 성공"));
     }
 
@@ -50,8 +52,17 @@ public class UserController {
     public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request,
             HttpServletResponse response) {
         String accessToken = userService.logIn(request);
-        response.addHeader("Set-Cookie",
-                "accessToken=" + accessToken);
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                .httpOnly(true)
+//                .secure(true)
+                .path("/")
+                .maxAge(60 * 60)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
         return ResponseEntity.ok(ApiResponse.success("로그인 성공"));
     }
 }
