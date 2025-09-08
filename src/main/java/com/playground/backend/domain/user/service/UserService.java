@@ -30,7 +30,7 @@ public class UserService {
      *
      * @param signUpRequest 회원가입 요청 DTO
      * @throws UserException EMAIL_EXISTS
-     * @throws UserException USERNAME_EXISTS
+     * @throws UserException NICKNAME_EXISTS
      * @throws UserException PHONE_EXISTS
      */
     @Transactional
@@ -39,8 +39,8 @@ public class UserService {
             throw new UserException(UserErrorCode.EMAIL_EXISTS);
         }
 
-        if (userRepository.existsByUserName(signUpRequest.getUserName())) {
-            throw new UserException(UserErrorCode.USERNAME_EXISTS);
+        if (userRepository.existsByNickName(signUpRequest.getNickName())) {
+            throw new UserException(UserErrorCode.NICKNAME_EXISTS);
         }
 
         if (userRepository.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
@@ -50,7 +50,7 @@ public class UserService {
         User user = User.builder()
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .userName(signUpRequest.getUserName())
+                .nickName(signUpRequest.getNickName())
                 .fullName(signUpRequest.getFullName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .profileImage(signUpRequest.getProfileImage())

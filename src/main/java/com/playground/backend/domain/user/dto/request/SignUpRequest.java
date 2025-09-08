@@ -27,7 +27,7 @@ public class SignUpRequest {
     private String password;
 
     @NotBlank(message = "닉네임을 입력해주세요.")
-    private String userName;
+    private String nickName;
 
     @NotBlank(message = "이름을 입력해주세요.")
     private String fullName;
