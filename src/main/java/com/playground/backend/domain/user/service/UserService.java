@@ -53,6 +53,7 @@ public class UserService {
                 .nickName(signUpRequest.getNickName())
                 .fullName(signUpRequest.getFullName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
+                .birthDate(signUpRequest.getBirthDate())
                 .profileImage(signUpRequest.getProfileImage())
                 .role(User.RoleType.ROLE_USER)
                 .build();

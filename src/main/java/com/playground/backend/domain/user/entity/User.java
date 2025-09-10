@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * 유저 엔티티
  */
@@ -36,6 +38,9 @@ public class User extends BaseEntity {
 
     @Column(length = 20, unique = true, nullable = false)
     private String phoneNumber;
+
+    @Column(nullable = false)
+    private LocalDate birthDate;
 
     @Column(name = "profile_image")
     private String profileImage;

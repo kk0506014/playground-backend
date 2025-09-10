@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 /**
  * 유저 API 응답 DTO
  */
@@ -23,6 +25,8 @@ public class UserResponse {
 
     private String phoneNumber;
 
+    private LocalDate birthDate;
+
     private String profileImage;
 
     /**
@@ -38,6 +42,7 @@ public class UserResponse {
                 user.getNickName(),
                 user.getFullName(),
                 user.getPhoneNumber(),
+                user.getBirthDate(),
                 user.getProfileImage()
         );
     }

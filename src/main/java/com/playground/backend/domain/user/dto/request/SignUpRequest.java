@@ -1,12 +1,11 @@
 package com.playground.backend.domain.user.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 /**
  * 회원가입 요청 DTO
@@ -35,6 +34,9 @@ public class SignUpRequest {
     @NotBlank(message = "전화번호를 입력해주세요.")
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호 형식이 올바르지 않습니다. (ex: 010-1234-5678)")
     private String phoneNumber;
+
+    @NotNull(message = "생년월일을 입력해주세요.")
+    private LocalDate birthDate;
 
     private String profileImage;
 }
