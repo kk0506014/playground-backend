@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "ground")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class Ground extends BaseEntity {
 
     @Id

@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "payment")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class Payment extends BaseEntity {
 
     @Id

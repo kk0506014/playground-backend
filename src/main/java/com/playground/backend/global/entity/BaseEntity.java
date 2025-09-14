@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 /**
  * 생성/수정 시간 기본 엔티티
  */
-@Getter
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@MappedSuperclass
+@Getter
 public class BaseEntity {
 
     @CreatedDate

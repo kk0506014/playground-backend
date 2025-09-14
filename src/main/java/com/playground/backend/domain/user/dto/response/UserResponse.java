@@ -10,9 +10,9 @@ import java.time.LocalDate;
 /**
  * 유저 API 응답 DTO
  */
+@AllArgsConstructor
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserResponse {
 
     private Long id;

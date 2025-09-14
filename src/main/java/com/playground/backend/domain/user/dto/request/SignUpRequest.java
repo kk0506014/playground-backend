@@ -10,9 +10,9 @@ import java.time.LocalDate;
 /**
  * 회원가입 요청 DTO
  */
+@AllArgsConstructor
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SignUpRequest {
 
     @NotBlank(message = "이메일을 입력해주세요.")

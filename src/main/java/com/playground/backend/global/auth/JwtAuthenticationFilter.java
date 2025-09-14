@@ -17,8 +17,8 @@ import java.io.IOException;
 /**
  * JWT 인증 필터
  */
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;

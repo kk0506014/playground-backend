@@ -13,10 +13,10 @@ import java.util.Objects;
  * 팀 멤버 복합키 엔티티
  */
 @Embeddable
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class TeamMemberId implements Serializable {
 
     private Long userId;

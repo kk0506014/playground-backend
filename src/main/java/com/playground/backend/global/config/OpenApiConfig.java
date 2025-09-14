@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
  * 도메인 API 그룹
  * Controller 하위 path 포함
  */
-@Configuration
 @OpenAPIDefinition(
         info = @Info(
                 title = "PlayGround_PG",
@@ -32,6 +31,7 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
+@Configuration
 public class OpenApiConfig {
 
     @Bean
