@@ -30,7 +30,7 @@ public class UserResponse {
     private String profileImage;
 
     /**
-     * UserResponse DTO 변환
+     * UserResponse DTO 변환 메서드
      *
      * @param user 변환할 User 엔티티
      * @return UserResponse DTO
