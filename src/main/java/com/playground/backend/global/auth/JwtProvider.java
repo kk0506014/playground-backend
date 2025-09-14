@@ -10,26 +10,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * JWT 공급자
+ */
 @Slf4j
 @Component
 public class JwtProvider {
 
     private final Key secretKey;
     private final long accessTokenValidity;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.access-token-validity}") long accessTokenValidity
+            @Value("${jwt.access-token-validity}") long accessTokenValidity,
+            CustomUserDetailsService customUserDetailsService
     ) {
         this.secretKey = generateSecretKey(secret);
         this.accessTokenValidity = accessTokenValidity;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     /**
@@ -106,7 +112,7 @@ public class JwtProvider {
     }
 
     /**
-     * Authentication 객체 생성 메서드
+     * 인증 객체 생성 메서드
      *
      * @param token 검증된 JWT 문자열
      * @return Spring Security 인증 객체
@@ -115,12 +121,9 @@ public class JwtProvider {
         Claims claims = parseToken(token);
         String email = claims.getSubject();
 
-        @SuppressWarnings("unchecked")
-        List<String> roles = (List<String>) claims.get("roles");
-        String role = roles.get(0);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-        return new UsernamePasswordAuthenticationToken(
-                email, "", List.of(new SimpleGrantedAuthority(role)));
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     /**
