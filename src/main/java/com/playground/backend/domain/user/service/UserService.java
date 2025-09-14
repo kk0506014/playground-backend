@@ -2,6 +2,7 @@ package com.playground.backend.domain.user.service;
 
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
+import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.exception.UserErrorCode;
 import com.playground.backend.domain.user.exception.UserException;
@@ -79,5 +80,20 @@ public class UserService {
         }
 
         return jwtProvider.generateToken(user.getEmail(), List.of(user.getRole().name()));
+    }
+
+    /**
+     * 내 정보 조회 메서드
+     *
+     * @param email 로그인된 사용자의 이메일
+     * @return UserResponse DTO
+     * @throws UserException USER_NOT_FOUND
+     */
+    @Transactional(readOnly = true)
+    public UserResponse getMyProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        return UserResponse.from(user);
     }
 }
