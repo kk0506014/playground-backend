@@ -2,7 +2,9 @@ package com.playground.backend.domain.user.controller;
 
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
+import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.service.UserService;
+import com.playground.backend.global.auth.CustomUserDetails;
 import com.playground.backend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -12,10 +14,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 유저 컨트롤러
@@ -89,5 +89,18 @@ public class UserController {
         response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(ApiResponse.success("로그아웃 성공"));
+    }
+
+    /**
+     * 내 정보 조회 엔드포인트
+     *
+     * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @return UserResponse DTO, 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @GetMapping("/me")
+    @Operation(summary = "내 정보 조회")
+    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserResponse myProfile = userService.getMyProfile(userDetails.getUsername());
+        return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
     }
 }
