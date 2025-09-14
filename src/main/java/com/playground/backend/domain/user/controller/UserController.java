@@ -5,6 +5,7 @@ import com.playground.backend.domain.user.dto.request.SignUpRequest;
 import com.playground.backend.domain.user.service.UserService;
 import com.playground.backend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 유저 컨트롤러
  */
+@SecurityRequirement(name = "BearerAuth")
 @Tag(name = "유저")
 @RequiredArgsConstructor
 @RestController
@@ -33,7 +35,7 @@ public class UserController {
      * @param request 회원가입 요청 DTO
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     @Operation(summary = "회원가입")
     public ResponseEntity<ApiResponse<String>> signUp(@Valid @RequestBody SignUpRequest request) {
         userService.signUp(request);
@@ -48,7 +50,7 @@ public class UserController {
      * @param response HTTP 응답 객체
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
-    @PostMapping("/log-in")
+    @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request, HttpServletResponse response) {
         String accessToken = userService.logIn(request);
@@ -73,7 +75,7 @@ public class UserController {
      * @param response HTTP 응답 객체
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
-    @PostMapping("/log-out")
+    @PostMapping("/logout")
     @Operation(summary = "로그아웃")
     public ResponseEntity<ApiResponse<String>> logOut(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
