@@ -3,6 +3,7 @@ package com.playground.backend.global.exception;
 import com.playground.backend.domain.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,6 +27,22 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(
                         "INTERNAL_SERVER_ERROR",
                         "서버 내부 오류가 발생했습니다."
+                ));
+    }
+
+    /**
+     * ValidationException 처리 메서드
+     *
+     * @param ex 발생한 ValidationException
+     * @return ResponseEntity<ErrorResponse> 사용자 정의 에러 응답
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
+        log.warn("ValidationException: {}", ex.getMessage());
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(
+                        "VALIDATION_ERROR",
+                        ex.getBindingResult().getAllErrors().get(0).getDefaultMessage()
                 ));
     }
 
