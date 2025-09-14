@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Swagger 설정
+ *
+ * 도메인 API 그룹
+ * Controller 하위 path 포함
  */
 @Configuration
 @OpenAPIDefinition(
@@ -29,10 +32,6 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
-/**
- * 도메인 API 그룹
- * Controller 하위 path 포함
- */
 public class OpenApiConfig {
 
     @Bean
