@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 /**
  * 로그인 요청 DTO
  */
+@AllArgsConstructor
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class LogInRequest {
 
     @NotBlank(message = "이메일을 입력해주세요.")

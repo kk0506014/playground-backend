@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "`match`")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class Match extends BaseEntity {
 
     @Id

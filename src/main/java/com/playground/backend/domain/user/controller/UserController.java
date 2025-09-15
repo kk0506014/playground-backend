@@ -2,6 +2,7 @@ package com.playground.backend.domain.user.controller;
 
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
+import com.playground.backend.domain.user.dto.request.UpdateRequest;
 import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.service.UserService;
 import com.playground.backend.global.auth.CustomUserDetails;
@@ -46,14 +47,14 @@ public class UserController {
     /**
      * 로그인 엔드포인트
      *
-     * @param request 로그인 요청 DTO
+     * @param logInRequest 로그인 요청 DTO
      * @param response HTTP 응답 객체
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PostMapping("/login")
     @Operation(summary = "로그인")
-    public ResponseEntity<ApiResponse<String>> logIn(@Valid @RequestBody LogInRequest request, HttpServletResponse response) {
-        String accessToken = userService.logIn(request);
+    public ResponseEntity<ApiResponse<String>> logIn(HttpServletResponse response, @Valid @RequestBody LogInRequest logInRequest) {
+        String accessToken = userService.logIn(logInRequest);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                 .httpOnly(true)
@@ -95,12 +96,26 @@ public class UserController {
      * 내 정보 조회 엔드포인트
      *
      * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
-     * @return UserResponse DTO, 성공 시 성공 메시지, 실패 시 에러 메시지
+     * @return myProfile, 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회")
     public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
         UserResponse myProfile = userService.getMyProfile(userDetails.getUsername());
         return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
+    }
+
+    /**
+     * 내 정보 수정 엔드포인트
+     *
+     * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @param updateRequest 수정할 사용자 정보 DTO
+     * @return updatedProfile, 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @PutMapping("/me")
+    @Operation(summary = "내 정보 수정")
+    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateRequest updateRequest) {
+        UserResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
+        return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
     }
 }

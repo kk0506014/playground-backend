@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "reservation")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class Reservation extends BaseEntity {
 
     @Id

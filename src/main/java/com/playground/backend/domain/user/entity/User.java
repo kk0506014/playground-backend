@@ -14,10 +14,10 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "user")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -42,7 +42,6 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "profile_image")
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
@@ -52,5 +51,20 @@ public class User extends BaseEntity {
     public enum RoleType {
         ROLE_USER,
         ROLE_ADMIN
+    }
+
+    /**
+     * 정보 수정 메서드
+     *
+     * @param nickName      변경할 닉네임, null이면 기존 값 유지
+     * @param profileImage  변경할 프로필 이미지, null이면 기존 값 유지
+     */
+    public void updateProfile(String nickName, String profileImage) {
+        if (nickName != null && !nickName.isBlank()) {
+            this.nickName = nickName;
+        }
+        if (profileImage != null && !profileImage.isBlank()) {
+            this.profileImage = profileImage;
+        }
     }
 }

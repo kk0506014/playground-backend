@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "team_member")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class TeamMember {
 
     @EmbeddedId

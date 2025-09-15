@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "sport")
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
+@NoArgsConstructor
 public class Sport {
 
     @Id

@@ -10,8 +10,8 @@ import java.time.ZonedDateTime;
 /**
  * API 응답 DTO
  */
-@Getter
 @AllArgsConstructor
+@Getter
 public class ApiResponse<T> {
 
     private final ZonedDateTime timestamp;  // 응답 발생 시간

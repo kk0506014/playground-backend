@@ -1,9 +1,7 @@
 package com.playground.backend.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +9,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Swagger 설정
+ *
+ * 도메인 API 그룹
+ * Controller 하위 path 포함
  */
-@Configuration
 @OpenAPIDefinition(
         info = @Info(
                 title = "PlayGround_PG",
@@ -23,16 +23,7 @@ import org.springframework.context.annotation.Configuration;
                 @Server(url = "http://localhost:8080")
         }
 )
-@SecurityScheme(
-        name = "BearerAuth",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer",
-        bearerFormat = "JWT"
-)
-/**
- * 도메인 API 그룹
- * Controller 하위 path 포함
- */
+@Configuration
 public class OpenApiConfig {
 
     @Bean
