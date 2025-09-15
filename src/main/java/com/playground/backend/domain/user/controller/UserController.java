@@ -1,5 +1,6 @@
 package com.playground.backend.domain.user.controller;
 
+import com.playground.backend.domain.user.dto.request.ChangePasswordRequest;
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
 import com.playground.backend.domain.user.dto.request.UpdateRequest;
@@ -38,7 +39,8 @@ public class UserController {
      */
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    public ResponseEntity<ApiResponse<String>> signUp(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<ApiResponse<String>> signUp(
+            @Valid @RequestBody SignUpRequest request) {
         userService.signUp(request);
 
         return ResponseEntity.ok(ApiResponse.success("회원가입 성공"));
@@ -53,7 +55,9 @@ public class UserController {
      */
     @PostMapping("/login")
     @Operation(summary = "로그인")
-    public ResponseEntity<ApiResponse<String>> logIn(HttpServletResponse response, @Valid @RequestBody LogInRequest logInRequest) {
+    public ResponseEntity<ApiResponse<String>> logIn(
+            HttpServletResponse response,
+            @Valid @RequestBody LogInRequest logInRequest) {
         String accessToken = userService.logIn(logInRequest);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
@@ -78,7 +82,8 @@ public class UserController {
      */
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
-    public ResponseEntity<ApiResponse<String>> logOut(HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<String>> logOut(
+            HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
 //                .secure(true)
@@ -100,7 +105,8 @@ public class UserController {
      */
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회")
-    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         UserResponse myProfile = userService.getMyProfile(userDetails.getUsername());
         return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
     }
@@ -109,12 +115,14 @@ public class UserController {
      * 내 정보 수정 엔드포인트
      *
      * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
-     * @param updateRequest 수정할 사용자 정보 DTO
+     * @param updateRequest 내 정보 수정 요청 DTO
      * @return updatedProfile, 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정")
-    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateRequest updateRequest) {
+    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody UpdateRequest updateRequest) {
         UserResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
         return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
     }
@@ -128,7 +136,9 @@ public class UserController {
      */
     @DeleteMapping("/me")
     @Operation(summary = "내 정보 삭제(탈퇴)")
-    public ResponseEntity<ApiResponse<String>> deleteMyAccount(HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<String>> deleteMyAccount(
+            HttpServletResponse response,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.deleteMyAccount(userDetails.getUsername());
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
@@ -142,5 +152,22 @@ public class UserController {
         response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(ApiResponse.success("내 정보 삭제(탈퇴) 성공"));
+    }
+
+    /**
+     * 비밀번호 변경 엔드포인트
+     *
+     * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @param changePasswordRequest  비밀번호 변경 요청 DTO
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @PutMapping("/me/password")
+    @Operation(summary = "비밀번호 변경")
+    public ResponseEntity<ApiResponse<String>> changePassword(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(userDetails.getUsername(), changePasswordRequest);
+
+        return ResponseEntity.ok(ApiResponse.success("비밀번호 변경 성공"));
     }
 }
