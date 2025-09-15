@@ -1,5 +1,6 @@
 package com.playground.backend.domain.user.controller;
 
+import com.playground.backend.domain.user.dto.request.ChangePasswordRequest;
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
 import com.playground.backend.domain.user.dto.request.UpdateRequest;
@@ -151,5 +152,22 @@ public class UserController {
         response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(ApiResponse.success("내 정보 삭제(탈퇴) 성공"));
+    }
+
+    /**
+     * 비밀번호 변경 엔드포인트
+     *
+     * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @param changePasswordRequest  비밀번호 변경 요청 DTO
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @PutMapping("/me/password")
+    @Operation(summary = "비밀번호 변경")
+    public ResponseEntity<ApiResponse<String>> changePassword(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(userDetails.getUsername(), changePasswordRequest);
+
+        return ResponseEntity.ok(ApiResponse.success("비밀번호 변경 성공"));
     }
 }
