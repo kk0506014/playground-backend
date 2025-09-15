@@ -102,7 +102,7 @@ public class UserService {
      * 내 정보 수정 메서드
      *
      * @param email 로그인된 사용자의 이메일
-     * @param updateRequest 수정할 회원 정보 DTO
+     * @param updateRequest 내 정보 수정 요청 DTO
      * @return UserResponse 수정된 회원 정보 DTO
      * @throws UserException USER_NOT_FOUND
      */
