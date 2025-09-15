@@ -3,7 +3,6 @@ package com.playground.backend.domain.user.dto.response;
 import com.playground.backend.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -12,7 +11,6 @@ import java.time.LocalDate;
  */
 @AllArgsConstructor
 @Getter
-@NoArgsConstructor
 public class UserProfileResponse {
 
     private Long id;

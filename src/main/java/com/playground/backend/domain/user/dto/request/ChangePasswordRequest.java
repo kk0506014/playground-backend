@@ -3,11 +3,13 @@ package com.playground.backend.domain.user.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 비밀번호 변경 요청 DTO
  */
 @Getter
+@NoArgsConstructor
 public class ChangePasswordRequest {
 
     @NotBlank(message = "현재 비밀번호를 입력해주세요.")
