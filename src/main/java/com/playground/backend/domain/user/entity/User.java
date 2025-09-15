@@ -67,4 +67,13 @@ public class User extends BaseEntity {
             this.profileImage = profileImage;
         }
     }
+
+    /**
+     * 비밀번호 변경 메서드
+     *
+     * @param newPassword 새 비밀번호
+     */
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }
