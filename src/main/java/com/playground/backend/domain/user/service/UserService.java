@@ -1,9 +1,6 @@
 package com.playground.backend.domain.user.service;
 
-import com.playground.backend.domain.user.dto.request.ChangePasswordRequest;
-import com.playground.backend.domain.user.dto.request.LogInRequest;
-import com.playground.backend.domain.user.dto.request.SignUpRequest;
-import com.playground.backend.domain.user.dto.request.UpdateRequest;
+import com.playground.backend.domain.user.dto.request.*;
 import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.exception.UserErrorCode;
@@ -121,12 +118,18 @@ public class UserService {
      * 내 정보 삭제(탈퇴) 메서드
      *
      * @param email 로그인된 사용자의 이메일
+     * @param passwordRequest 비밀번호 요청 DTO
      * @throws UserException USER_NOT_FOUND
+     * @throws UserException INVALID_PASSWORD
      */
     @Transactional
-    public void deleteMyAccount(String email) {
+    public void deleteMyAccount(String email, PasswordRequest passwordRequest) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(passwordRequest.getPassword(), user.getPassword())) {
+            throw new UserException(UserErrorCode.INVALID_PASSWORD);
+        }
 
         userRepository.delete(user);
     }

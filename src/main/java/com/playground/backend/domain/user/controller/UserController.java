@@ -1,9 +1,6 @@
 package com.playground.backend.domain.user.controller;
 
-import com.playground.backend.domain.user.dto.request.ChangePasswordRequest;
-import com.playground.backend.domain.user.dto.request.LogInRequest;
-import com.playground.backend.domain.user.dto.request.SignUpRequest;
-import com.playground.backend.domain.user.dto.request.UpdateRequest;
+import com.playground.backend.domain.user.dto.request.*;
 import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.service.UserService;
 import com.playground.backend.global.auth.CustomUserDetails;
@@ -132,14 +129,16 @@ public class UserController {
      *
      * @param response HTTP 응답 객체
      * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @param passwordRequest 비밀번호 요청 DTO
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @DeleteMapping("/me")
     @Operation(summary = "내 정보 삭제(탈퇴)")
     public ResponseEntity<ApiResponse<String>> deleteMyAccount(
             HttpServletResponse response,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        userService.deleteMyAccount(userDetails.getUsername());
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody PasswordRequest passwordRequest) {
+        userService.deleteMyAccount(userDetails.getUsername(), passwordRequest);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
