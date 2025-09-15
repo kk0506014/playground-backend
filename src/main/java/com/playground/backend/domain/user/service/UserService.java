@@ -2,6 +2,7 @@ package com.playground.backend.domain.user.service;
 
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
+import com.playground.backend.domain.user.dto.request.UpdateRequest;
 import com.playground.backend.domain.user.dto.response.UserResponse;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.exception.UserErrorCode;
@@ -93,6 +94,24 @@ public class UserService {
     public UserResponse getMyProfile(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        return UserResponse.from(user);
+    }
+
+    /**
+     * 내 정보 수정 메서드
+     *
+     * @param email 로그인된 사용자의 이메일
+     * @param updateRequest 수정할 회원 정보 DTO
+     * @return UserResponse 수정된 회원 정보 DTO
+     * @throws UserException USER_NOT_FOUND
+     */
+    @Transactional
+    public UserResponse updateMyProfile(String email, UpdateRequest updateRequest) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        user.updateProfile(updateRequest.getNickName(), updateRequest.getProfileImage());
 
         return UserResponse.from(user);
     }
