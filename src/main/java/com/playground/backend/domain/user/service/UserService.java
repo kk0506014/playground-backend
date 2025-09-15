@@ -115,4 +115,18 @@ public class UserService {
 
         return UserResponse.from(user);
     }
+
+    /**
+     * 내 정보 삭제(탈퇴) 메서드
+     *
+     * @param email 로그인된 사용자의 이메일
+     * @throws UserException USER_NOT_FOUND
+     */
+    @Transactional
+    public void deleteMyAccount(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        userRepository.delete(user);
+    }
 }
