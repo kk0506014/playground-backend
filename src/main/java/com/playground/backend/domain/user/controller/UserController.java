@@ -114,7 +114,7 @@ public class UserController {
      * 내 정보 수정 엔드포인트
      *
      * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
-     * @param updateRequest 수정할 사용자 정보 DTO
+     * @param updateRequest 내 정보 수정 요청 DTO
      * @return updatedProfile, 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PutMapping("/me")
