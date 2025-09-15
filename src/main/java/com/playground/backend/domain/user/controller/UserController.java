@@ -38,7 +38,8 @@ public class UserController {
      */
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    public ResponseEntity<ApiResponse<String>> signUp(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<ApiResponse<String>> signUp(
+            @Valid @RequestBody SignUpRequest request) {
         userService.signUp(request);
 
         return ResponseEntity.ok(ApiResponse.success("회원가입 성공"));
@@ -53,7 +54,9 @@ public class UserController {
      */
     @PostMapping("/login")
     @Operation(summary = "로그인")
-    public ResponseEntity<ApiResponse<String>> logIn(HttpServletResponse response, @Valid @RequestBody LogInRequest logInRequest) {
+    public ResponseEntity<ApiResponse<String>> logIn(
+            HttpServletResponse response,
+            @Valid @RequestBody LogInRequest logInRequest) {
         String accessToken = userService.logIn(logInRequest);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
@@ -78,7 +81,8 @@ public class UserController {
      */
     @PostMapping("/logout")
     @Operation(summary = "로그아웃")
-    public ResponseEntity<ApiResponse<String>> logOut(HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<String>> logOut(
+            HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
 //                .secure(true)
@@ -100,7 +104,8 @@ public class UserController {
      */
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회")
-    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         UserResponse myProfile = userService.getMyProfile(userDetails.getUsername());
         return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
     }
@@ -114,7 +119,9 @@ public class UserController {
      */
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정")
-    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateRequest updateRequest) {
+    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody UpdateRequest updateRequest) {
         UserResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
         return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
     }
@@ -128,7 +135,9 @@ public class UserController {
      */
     @DeleteMapping("/me")
     @Operation(summary = "내 정보 삭제(탈퇴)")
-    public ResponseEntity<ApiResponse<String>> deleteMyAccount(HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<String>> deleteMyAccount(
+            HttpServletResponse response,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.deleteMyAccount(userDetails.getUsername());
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", "")
