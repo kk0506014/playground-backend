@@ -1,5 +1,6 @@
 package com.playground.backend.domain.user.service;
 
+import com.playground.backend.domain.user.dto.request.ChangePasswordRequest;
 import com.playground.backend.domain.user.dto.request.LogInRequest;
 import com.playground.backend.domain.user.dto.request.SignUpRequest;
 import com.playground.backend.domain.user.dto.request.UpdateRequest;
@@ -128,5 +129,30 @@ public class UserService {
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         userRepository.delete(user);
+    }
+
+    /**
+     * 비밀번호 변경 메서드
+     *
+     * @param email 로그인된 사용자의 이메일
+     * @param changePasswordRequest 비밀번호 변경 요청 DTO
+     * @throws UserException USER_NOT_FOUND
+     * @throws UserException INVALID_PASSWORD
+     * @throws UserException PASSWORD_REUSE
+     */
+    @Transactional
+    public void changePassword(String email, ChangePasswordRequest changePasswordRequest) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            throw new UserException(UserErrorCode.INVALID_PASSWORD);
+        }
+
+        if (changePasswordRequest.getNewPassword().equals(changePasswordRequest.getCurrentPassword())) {
+            throw new UserException(UserErrorCode.PASSWORD_REUSE);
+        }
+
+        user.changePassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
     }
 }
