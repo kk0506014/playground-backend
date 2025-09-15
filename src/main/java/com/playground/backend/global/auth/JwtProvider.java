@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * JWT 공급자
+ * JwtProvider
  */
 @Slf4j
 @Component
