@@ -47,8 +47,8 @@ public class UserController {
     /**
      * 로그인 엔드포인트
      *
-     * @param logInRequest 로그인 요청 DTO
      * @param response HTTP 응답 객체
+     * @param logInRequest 로그인 요청 DTO
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
     @PostMapping("/login")
@@ -117,5 +117,30 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails, @Valid @RequestBody UpdateRequest updateRequest) {
         UserResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
         return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
+    }
+
+    /**
+     * 내 정보 삭제(탈퇴) 엔드포인트
+     *
+     * @param response HTTP 응답 객체
+     * @param userDetails 인증된 사용자 정보가 담긴 CustomUserDetails
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @DeleteMapping("/me")
+    @Operation(summary = "내 정보 삭제(탈퇴)")
+    public ResponseEntity<ApiResponse<String>> deleteMyAccount(HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.deleteMyAccount(userDetails.getUsername());
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+                .httpOnly(true)
+//                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        return ResponseEntity.ok(ApiResponse.success("내 정보 삭제(탈퇴) 성공"));
     }
 }
