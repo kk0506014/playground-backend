@@ -1,7 +1,7 @@
 package com.playground.backend.domain.user.service;
 
 import com.playground.backend.domain.user.dto.request.*;
-import com.playground.backend.domain.user.dto.response.UserResponse;
+import com.playground.backend.domain.user.dto.response.*;
 import com.playground.backend.domain.user.entity.User;
 import com.playground.backend.domain.user.exception.UserErrorCode;
 import com.playground.backend.domain.user.exception.UserException;
@@ -85,15 +85,15 @@ public class UserService {
      * 내 정보 조회 메서드
      *
      * @param email 로그인된 사용자의 이메일
-     * @return UserResponse DTO
+     * @return UserProfileResponse DTO
      * @throws UserException USER_NOT_FOUND
      */
     @Transactional(readOnly = true)
-    public UserResponse getMyProfile(String email) {
+    public UserProfileResponse getMyProfile(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
-        return UserResponse.from(user);
+        return UserProfileResponse.from(user);
     }
 
     /**
@@ -101,17 +101,17 @@ public class UserService {
      *
      * @param email 로그인된 사용자의 이메일
      * @param updateRequest 내 정보 수정 요청 DTO
-     * @return UserResponse 수정된 회원 정보 DTO
+     * @return UserProfileResponse 수정된 회원 정보 DTO
      * @throws UserException USER_NOT_FOUND
      */
     @Transactional
-    public UserResponse updateMyProfile(String email, UpdateRequest updateRequest) {
+    public UserProfileResponse updateMyProfile(String email, UpdateRequest updateRequest) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         user.updateProfile(updateRequest.getNickName(), updateRequest.getProfileImage());
 
-        return UserResponse.from(user);
+        return UserProfileResponse.from(user);
     }
 
     /**
@@ -157,5 +157,19 @@ public class UserService {
         }
 
         user.changePassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+    }
+
+    /**
+     * 다른 유저 프로필 조회 메서드
+     *
+     * @param userId 조회할 유저 ID
+     * @return PublicUserProfileResponse DTO
+     */
+    @Transactional(readOnly = true)
+    public PublicUserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        return PublicUserProfileResponse.from(user);
     }
 }

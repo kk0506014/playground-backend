@@ -1,7 +1,7 @@
 package com.playground.backend.domain.user.controller;
 
 import com.playground.backend.domain.user.dto.request.*;
-import com.playground.backend.domain.user.dto.response.UserResponse;
+import com.playground.backend.domain.user.dto.response.*;
 import com.playground.backend.domain.user.service.UserService;
 import com.playground.backend.global.auth.CustomUserDetails;
 import com.playground.backend.global.response.ApiResponse;
@@ -102,9 +102,9 @@ public class UserController {
      */
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회")
-    public ResponseEntity<ApiResponse<UserResponse>> getMyProfile(
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getMyProfile(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserResponse myProfile = userService.getMyProfile(userDetails.getUsername());
+        UserProfileResponse myProfile = userService.getMyProfile(userDetails.getUsername());
         return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
     }
 
@@ -117,10 +117,10 @@ public class UserController {
      */
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정")
-    public ResponseEntity<ApiResponse<UserResponse>> updateMyProfile(
+    public ResponseEntity<ApiResponse<UserProfileResponse>> updateMyProfile(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody UpdateRequest updateRequest) {
-        UserResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
+        UserProfileResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
         return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
     }
 
@@ -168,5 +168,20 @@ public class UserController {
         userService.changePassword(userDetails.getUsername(), changePasswordRequest);
 
         return ResponseEntity.ok(ApiResponse.success("비밀번호 변경 성공"));
+    }
+
+    /**
+     * 다른 유저 프로필 조회 엔드포인트
+     *
+     * @param userId 조회할 유저 ID
+     * @return PublicUserProfileResponse, 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @GetMapping("/{userId}/profile")
+    @Operation(summary = "다른 유저 프로필 조회")
+    public ResponseEntity<ApiResponse<PublicUserProfileResponse>> getUserProfile(
+            @PathVariable Long userId) {
+        PublicUserProfileResponse userProfile = userService.getUserProfile(userId);
+
+        return ResponseEntity.ok(ApiResponse.success(userProfile, "다른 유저 프로필 조회 성공"));
     }
 }

@@ -1,7 +1,6 @@
 package com.playground.backend.domain.user.dto.request;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 /**
  * 회원가입 요청 DTO
  */
-@AllArgsConstructor
 @Getter
 @NoArgsConstructor
 public class SignUpRequest {

@@ -3,17 +3,15 @@ package com.playground.backend.domain.user.dto.response;
 import com.playground.backend.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 /**
- * 유저 API 응답 DTO
+ * 내 정보 조회 응답 DTO
  */
 @AllArgsConstructor
 @Getter
-@NoArgsConstructor
-public class UserResponse {
+public class UserProfileResponse {
 
     private Long id;
 
@@ -30,13 +28,13 @@ public class UserResponse {
     private String profileImage;
 
     /**
-     * UserResponse DTO 변환 메서드
+     * UserProfileResponse DTO 변환 메서드
      *
      * @param user 변환할 User 엔티티
-     * @return UserResponse DTO
+     * @return UserProfileResponse DTO
      */
-    public static UserResponse from(User user) {
-        return new UserResponse(
+    public static UserProfileResponse from(User user) {
+        return new UserProfileResponse(
                 user.getId(),
                 user.getEmail(),
                 user.getNickName(),
