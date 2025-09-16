@@ -169,4 +169,19 @@ public class UserController {
 
         return ResponseEntity.ok(ApiResponse.success("비밀번호 변경 성공"));
     }
+
+    /**
+     * 다른 유저 프로필 조회 엔드포인트
+     *
+     * @param userId 조회할 유저 ID
+     * @return PublicUserProfileResponse, 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @GetMapping("/{userId}/profile")
+    @Operation(summary = "다른 유저 프로필 조회")
+    public ResponseEntity<ApiResponse<PublicUserProfileResponse>> getUserProfile(
+            @PathVariable Long userId) {
+        PublicUserProfileResponse userProfile = userService.getUserProfile(userId);
+
+        return ResponseEntity.ok(ApiResponse.success(userProfile, "다른 유저 프로필 조회 성공"));
+    }
 }
