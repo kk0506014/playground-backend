@@ -1,12 +1,12 @@
 package com.playground.backend.domain.user.controller;
 
 import com.playground.backend.domain.user.dto.request.*;
-import com.playground.backend.domain.user.dto.response.*;
+import com.playground.backend.domain.user.dto.response.PublicUserProfileResponse;
+import com.playground.backend.domain.user.dto.response.UserProfileResponse;
 import com.playground.backend.domain.user.service.UserService;
 import com.playground.backend.global.auth.CustomUserDetails;
 import com.playground.backend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 유저 컨트롤러
  */
-@SecurityRequirement(name = "BearerAuth")
 @Tag(name = "유저")
 @RequiredArgsConstructor
 @RestController
