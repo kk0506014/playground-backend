@@ -61,4 +61,20 @@ public class GlobalExceptionHandler {
                         ex.getMessage()
                 ));
     }
+
+    /**
+     * SportException 처리 메서드
+     *
+     * @param ex 발생한 SportException
+     * @return ResponseEntity<ErrorResponse> 사용자 정의 에러 응답
+     */
+    @ExceptionHandler(SportException.class)
+    public ResponseEntity<ErrorResponse> handleSportException(SportException ex) {
+        log.warn("SportException: {}", ex.getMessage());
+        return ResponseEntity.status(ex.getStatus())
+                .body(ErrorResponse.of(
+                        ex.getCode(),
+                        ex.getMessage()
+                ));
+    }
 }
