@@ -1,5 +1,6 @@
 package com.playground.backend.global.exception;
 
+import com.playground.backend.domain.sport.exception.SportException;
 import com.playground.backend.domain.user.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
