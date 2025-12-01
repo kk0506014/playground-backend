@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
  */
 public enum SportErrorCode {
 
-    PASSWORD_REUSE1(HttpStatus.BAD_REQUEST, "PASSWORD_REUSE1", "새 비밀번호가 기존 비밀번호와 동일합니다.");
+    NAME_EXISTS(HttpStatus.BAD_REQUEST, "NAME_EXISTS", "이미 존재하는 스포츠 이름입니다."),
+    INVALID_TEAM_MEMBER(HttpStatus.BAD_REQUEST, "INVALID_TEAM_MEMBER", "최소 팀 인원은 최대 팀 인원보다 클 수 없습니다.");
 
     public final HttpStatus status;
     public final String code;
