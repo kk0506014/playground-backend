@@ -50,6 +50,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/login", "/api/users/signup").permitAll() // 공개 API
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll() // swagger API
+
+                        /* API 임시 접근 허용 */
+                        .requestMatchers("/api/sports").permitAll()
+
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
 
