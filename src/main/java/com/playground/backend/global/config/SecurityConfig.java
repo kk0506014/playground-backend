@@ -53,6 +53,7 @@ public class SecurityConfig {
 
                         /* API 임시 접근 허용 */
                         .requestMatchers("/api/sports").permitAll()
+                        .requestMatchers("/api/sports/**").permitAll()
 
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
