@@ -44,5 +44,17 @@ public class SportService {
         sportRepository.save(sport);
     }
 
+    /**
+     * 스포츠 삭제 메서드
+     *
+     * @param sportId 삭제할 스포츠 ID
+     * @throws SportException SPORT_NOT_FOUND
+     */
+    @Transactional
+    public void deleteSport(Long sportId) {
+        Sport sport = sportRepository.findById(sportId)
+                .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
 
+        sportRepository.delete(sport);
+    }
 }
