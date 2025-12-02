@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 스포츠 컨트롤러
@@ -37,5 +34,20 @@ public class SportController {
         sportService.createSport(createSportRequest);
 
         return ResponseEntity.ok(ApiResponse.success("스포츠 생성 성공"));
+    }
+
+    /**
+     * 스포츠 삭제 엔드포인트
+     *
+     * @param sportId 삭제할 스포츠 ID
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @DeleteMapping("/{sportId}")
+    @Operation(summary = "스포츠 삭제")
+    public ResponseEntity<ApiResponse<String>> deleteSport(
+            @PathVariable Long sportId) {
+        sportService.deleteSport(sportId);
+
+        return ResponseEntity.ok(ApiResponse.success("스포츠 삭제 성공"));
     }
 }
