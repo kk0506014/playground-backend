@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.controller;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.service.SportService;
 import com.playground.backend.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,5 +50,20 @@ public class SportController {
         sportService.deleteSport(sportId);
 
         return ResponseEntity.ok(ApiResponse.success("스포츠 삭제 성공"));
+    }
+
+    /**
+     * 스포츠 단건 조회 엔드포인트
+     *
+     * @param sportId 단건 조회할 스포츠 ID
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @GetMapping("/{sportId}")
+    @Operation(summary = "스포츠 단건 조회")
+    public ResponseEntity<ApiResponse<SportResponse>> getSport(
+            @PathVariable Long sportId) {
+        SportResponse sportResponse = sportService.getSport(sportId);
+
+        return ResponseEntity.ok(ApiResponse.success(sportResponse, "스포츠 단건 조회 성공"));
     }
 }
