@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.service;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.entity.Sport;
 import com.playground.backend.domain.sport.exception.SportErrorCode;
 import com.playground.backend.domain.sport.exception.SportException;
@@ -56,5 +57,20 @@ public class SportService {
                 .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
 
         sportRepository.delete(sport);
+    }
+
+    /**
+     * 스포츠 단건 조회 메서드
+     *
+     * @param sportId 단건 조회할 스포츠 ID
+     * @throws SportException SPORT_NOT_FOUND
+     * @return SportResponse DTO
+     */
+    @Transactional(readOnly = true)
+    public SportResponse getSport(Long sportId) {
+        Sport sport = sportRepository.findById(sportId)
+                .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
+
+        return SportResponse.from(sport);
     }
 }
