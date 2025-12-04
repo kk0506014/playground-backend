@@ -24,6 +24,23 @@ public class Sport {
     @Column(length = 100, unique = true, nullable = false)
     private String name;
 
-    @Column(name = "min_team_member", nullable = false)
+    @Column(nullable = false)
     private Integer minTeamMember;
+
+    @Column(nullable = false)
+    private Integer maxTeamMember;
+
+    /**
+     * minTeamMember 수정 메서드
+     */
+    public void updateMinTeamMember(Integer minTeamMember) {
+        this.minTeamMember = minTeamMember;
+    }
+
+    /**
+     * maxTeamMember 수정 메서드
+     */
+    public void updateMaxTeamMember(Integer maxTeamMember) {
+        this.maxTeamMember = maxTeamMember;
+    }
 }

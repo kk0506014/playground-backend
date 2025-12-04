@@ -163,6 +163,7 @@ public class UserService {
      * 다른 유저 프로필 조회 메서드
      *
      * @param userId 조회할 유저 ID
+     * @throws UserException USER_NOT_FOUND
      * @return PublicUserProfileResponse DTO
      */
     @Transactional(readOnly = true)
