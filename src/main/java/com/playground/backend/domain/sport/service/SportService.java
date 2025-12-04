@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.service;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.response.SportListResponse;
 import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.entity.Sport;
 import com.playground.backend.domain.sport.exception.SportErrorCode;
@@ -9,6 +10,8 @@ import com.playground.backend.domain.sport.repository.SportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 스포츠 서비스
@@ -72,5 +75,17 @@ public class SportService {
                 .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
 
         return SportResponse.from(sport);
+    }
+
+    /**
+     * 스포츠 전체 조회 메서드
+     *
+     * @return SportListResponse DTO List
+     */
+    @Transactional(readOnly = true)
+    public List<SportListResponse> getSportList() {
+        return sportRepository.findAll().stream()
+                .map(SportListResponse::from)
+                .toList();
     }
 }
