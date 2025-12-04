@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.service;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.request.UpdateSportRequest;
 import com.playground.backend.domain.sport.dto.response.SportListResponse;
 import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.entity.Sport;
@@ -49,17 +50,15 @@ public class SportService {
     }
 
     /**
-     * 스포츠 삭제 메서드
+     * 스포츠 전체 조회 메서드
      *
-     * @param sportId 삭제할 스포츠 ID
-     * @throws SportException SPORT_NOT_FOUND
+     * @return SportListResponse DTO List
      */
-    @Transactional
-    public void deleteSport(Long sportId) {
-        Sport sport = sportRepository.findById(sportId)
-                .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
-
-        sportRepository.delete(sport);
+    @Transactional(readOnly = true)
+    public List<SportListResponse> getSportList() {
+        return sportRepository.findAll().stream()
+                .map(SportListResponse::from)
+                .toList();
     }
 
     /**
@@ -78,14 +77,46 @@ public class SportService {
     }
 
     /**
-     * 스포츠 전체 조회 메서드
+     * 스포츠 수정 메서드
      *
-     * @return SportListResponse DTO List
+     * @param sportId 수정할 스포츠 ID
+     * @throws SportException SPORT_NOT_FOUND
+     * @throws SportException INVALID_TEAM_MEMBER
      */
-    @Transactional(readOnly = true)
-    public List<SportListResponse> getSportList() {
-        return sportRepository.findAll().stream()
-                .map(SportListResponse::from)
-                .toList();
+    @Transactional
+    public void updateSport(Long sportId, UpdateSportRequest updateSportRequest) {
+        Sport sport = sportRepository.findById(sportId)
+                .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
+
+        Integer min = updateSportRequest.getMinTeamMember();
+        Integer max = updateSportRequest.getMaxTeamMember();
+
+        if (min != null && max != null) {
+            if (min > max) {
+                throw new SportException(SportErrorCode.INVALID_TEAM_MEMBER);
+            }
+        }
+
+        if (min != null) {
+            sport.updateMinTeamMember(min);
+        }
+
+        if (max != null) {
+            sport.updateMaxTeamMember(max);
+        }
+    }
+
+    /**
+     * 스포츠 삭제 메서드
+     *
+     * @param sportId 삭제할 스포츠 ID
+     * @throws SportException SPORT_NOT_FOUND
+     */
+    @Transactional
+    public void deleteSport(Long sportId) {
+        Sport sport = sportRepository.findById(sportId)
+                .orElseThrow(() -> new SportException(SportErrorCode.SPORT_NOT_FOUND));
+
+        sportRepository.delete(sport);
     }
 }
