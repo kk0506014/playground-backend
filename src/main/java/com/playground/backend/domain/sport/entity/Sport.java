@@ -29,4 +29,18 @@ public class Sport {
 
     @Column(nullable = false)
     private Integer maxTeamMember;
+
+    /**
+     * minTeamMember 수정 메서드
+     */
+    public void updateMinTeamMember(Integer minTeamMember) {
+        this.minTeamMember = minTeamMember;
+    }
+
+    /**
+     * maxTeamMember 수정 메서드
+     */
+    public void updateMaxTeamMember(Integer maxTeamMember) {
+        this.maxTeamMember = maxTeamMember;
+    }
 }
