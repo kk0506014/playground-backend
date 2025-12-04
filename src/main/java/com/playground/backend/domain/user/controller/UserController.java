@@ -104,6 +104,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserProfileResponse>> getMyProfile(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         UserProfileResponse myProfile = userService.getMyProfile(userDetails.getUsername());
+
         return ResponseEntity.ok(ApiResponse.success(myProfile, "내 정보 조회 성공"));
     }
 
@@ -120,6 +121,7 @@ public class UserController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody UpdateRequest updateRequest) {
         UserProfileResponse updatedProfile = userService.updateMyProfile(userDetails.getUsername(), updateRequest);
+
         return ResponseEntity.ok(ApiResponse.success(updatedProfile, "내 정보 수정 성공"));
     }
 
