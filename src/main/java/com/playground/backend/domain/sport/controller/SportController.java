@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.controller;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.response.SportListResponse;
 import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.service.SportService;
 import com.playground.backend.global.response.ApiResponse;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 스포츠 컨트롤러
@@ -65,5 +68,18 @@ public class SportController {
         SportResponse sportResponse = sportService.getSport(sportId);
 
         return ResponseEntity.ok(ApiResponse.success(sportResponse, "스포츠 단건 조회 성공"));
+    }
+
+    /**
+     * 스포츠 전체 조회 엔드포인트
+     *
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @GetMapping
+    @Operation(summary = "스포츠 전체 조회")
+    public ResponseEntity<ApiResponse<List<SportListResponse>>> getSportList() {
+        List<SportListResponse> sportListResponse = sportService.getSportList();
+
+        return ResponseEntity.ok(ApiResponse.success(sportListResponse, "스포츠 전체 조회 성공"));
     }
 }
