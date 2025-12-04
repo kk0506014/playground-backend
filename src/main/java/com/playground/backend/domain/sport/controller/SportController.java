@@ -1,6 +1,7 @@
 package com.playground.backend.domain.sport.controller;
 
 import com.playground.backend.domain.sport.dto.request.CreateSportRequest;
+import com.playground.backend.domain.sport.dto.request.UpdateSportRequest;
 import com.playground.backend.domain.sport.dto.response.SportListResponse;
 import com.playground.backend.domain.sport.dto.response.SportResponse;
 import com.playground.backend.domain.sport.service.SportService;
@@ -40,19 +41,18 @@ public class SportController {
         return ResponseEntity.ok(ApiResponse.success("스포츠 생성 성공"));
     }
 
+
     /**
-     * 스포츠 삭제 엔드포인트
+     * 스포츠 전체 조회 엔드포인트
      *
-     * @param sportId 삭제할 스포츠 ID
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
-    @DeleteMapping("/{sportId}")
-    @Operation(summary = "스포츠 삭제")
-    public ResponseEntity<ApiResponse<String>> deleteSport(
-            @PathVariable Long sportId) {
-        sportService.deleteSport(sportId);
+    @GetMapping
+    @Operation(summary = "스포츠 전체 조회")
+    public ResponseEntity<ApiResponse<List<SportListResponse>>> getSportList() {
+        List<SportListResponse> sportListResponse = sportService.getSportList();
 
-        return ResponseEntity.ok(ApiResponse.success("스포츠 삭제 성공"));
+        return ResponseEntity.ok(ApiResponse.success(sportListResponse, "스포츠 전체 조회 성공"));
     }
 
     /**
@@ -71,15 +71,34 @@ public class SportController {
     }
 
     /**
-     * 스포츠 전체 조회 엔드포인트
+     * 스포츠 수정 엔드포인트
      *
+     * @param sportId 수정할 스포츠 ID
+     * @param updateSportRequest 스포츠 수정 요청 DTO
      * @return 성공 시 성공 메시지, 실패 시 에러 메시지
      */
-    @GetMapping
-    @Operation(summary = "스포츠 전체 조회")
-    public ResponseEntity<ApiResponse<List<SportListResponse>>> getSportList() {
-        List<SportListResponse> sportListResponse = sportService.getSportList();
+    @PutMapping("/{sportId}")
+    @Operation(summary = "스포츠 수정")
+    public ResponseEntity<ApiResponse<String>> updateSport(
+            @PathVariable Long sportId,
+            @Valid @RequestBody UpdateSportRequest updateSportRequest) {
+        sportService.updateSport(sportId, updateSportRequest);
 
-        return ResponseEntity.ok(ApiResponse.success(sportListResponse, "스포츠 전체 조회 성공"));
+        return ResponseEntity.ok(ApiResponse.success("스포츠 수정 성공"));
+    }
+
+    /**
+     * 스포츠 삭제 엔드포인트
+     *
+     * @param sportId 삭제할 스포츠 ID
+     * @return 성공 시 성공 메시지, 실패 시 에러 메시지
+     */
+    @DeleteMapping("/{sportId}")
+    @Operation(summary = "스포츠 삭제")
+    public ResponseEntity<ApiResponse<String>> deleteSport(
+            @PathVariable Long sportId) {
+        sportService.deleteSport(sportId);
+
+        return ResponseEntity.ok(ApiResponse.success("스포츠 삭제 성공"));
     }
 }
